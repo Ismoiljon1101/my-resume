@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Images and Quotes</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        #image-container img {
+            max-width: 70%; /* Adjust the maximum width as needed */
+            max-height: 70vh; /* Adjust the maximum height as needed */
+            object-fit: contain; /* Maintain aspect ratio without stretching */
+            border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        #quote-container {
+            margin-top: 20px; /* Adjust as needed */
+        }
+
+        #quote-text {
+            font-weight: bold;
+            font-size: 1.5em; /* Adjust the font size as needed */
+        }
+
+        #quote-mark {
+            font-size: 2em; /* Adjust the font size of the quote mark */
+            margin-right: 5px; /* Add spacing to the right of the quote mark */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="image-container">
+            <!-- This is where the random image will be displayed -->
+        </div>
+
+        <div id="quote-container">
+            <p id="quote-text">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        const imagePath = 'Images/';
+        const maxImageIndex = 5; // Maximum image index
+        let currentImageIndex = getRandomIndex(maxImageIndex);
+
+        const quotes = [
+            "The greatest gift of life is to be aware of the presence of God in all that is around us. - Meister Eckhart",
+            "The universe is a symphony of vibrating energy. When we align ourselves with this symphony, we experience harmony and peace. - Deepak Chopra",
+            "The universe is not hostile, indifferent, or random. It is a living, breathing intelligence that responds to our thoughts and intentions. - Wayne Dyer",
+            "The greatest wisdom is to know that you know nothing. - Socrates",
+            "The universe is a vast and mysterious place, but within us lies the power to understand its secrets. - Albert Einstein"
+        ];
+
+        let currentQuoteIndex = getRandomIndex(quotes.length);
+        let quoteElement = document.getElementById('quote-text');
+        quoteElement.innerHTML = `<span id="quote-mark">“</span>${quotes[currentQuoteIndex]}<span id="quote-mark">”</span>`;
+
+        function getRandomIndex(maxIndex) {
+            return Math.floor(Math.random() * maxIndex);
+        }
+
+        function displayRandom() {
+            // Update the quote with fade-in animation
+            quoteElement.style.opacity = '0';
+            quoteElement.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => {
+                currentQuoteIndex = getRandomIndex(quotes.length);
+                quoteElement.innerHTML = `<span id="quote-mark">“</span>${quotes[currentQuoteIndex]}<span id="quote-mark">”</span>`;
+                quoteElement.style.opacity = '1';
+            }, 500);
+        }
+
+        // Call the displayRandom function initially and every 5 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            displayRandom();
+            setInterval(displayRandom, 5000);
+        });
+
+        // Display the initial image when the page is loaded
+        const img = document.createElement('img');
+        img.src = `${imagePath}${currentImageIndex}.jpg`;
+        img.alt = 'Random Image';
+        document.getElementById('image-container').appendChild(img);
+    </script>
+</body>
+</html>
