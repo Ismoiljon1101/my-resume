@@ -1,212 +1,66 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masharipov Ismoiljon - Resume</title>
+    <title>Your Website</title>
+
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #f2f2f2;
-            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
         }
 
-        header {
+        .quote-container {
             text-align: center;
+        }
+
+        #quote-text {
+            font-size: 1.5rem;
             margin-bottom: 20px;
         }
 
-        h1 {
-            color: #0066cc;
-            margin-bottom: 5px;
-        }
-
-        p {
-            font-size: 18px;
-            color: #666;
-        }
-
-        section {
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #0066cc;
-            border-bottom: 2px solid #0066cc;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-        }
-
-        ul, ol {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            color: #0066cc;
-            margin-bottom: 10px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
-            border: 4px solid #0066cc;
-            border-radius: 8px;
-        }
-
-        a {
-            color: #0066cc;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            background-color: #0066cc;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            width: 100%;
+        #new-quote-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
+    <div class="quote-container">
+        <p id="quote-text">Loading...</p>
+        <button id="new-quote-btn">New Quote</button>
+    </div>
 
-    <header>
-        <h1>Masharipov Ismoiljon</h1>
-        <p>Professional Chef and Student at Sejong University</p>
-    </header>
+    <script>
+        document.addEventListener('DOMContentLoaded', getQuote);
 
-    <section>
-        <h2>Summary</h2>
-        <p>Enthusiastic and skilled Professional Chef currently studying at Sejong University. Born in Uzbekistan, Khorezm, and 21 years old. Excels in culinary arts and dedicated to providing exceptional dining experiences.</p>
-    </section>
+        const quoteText = document.getElementById('quote-text');
+        const newQuoteBtn = document.getElementById('new-quote-btn');
 
-    <section>
-        <h2>Education</h2>
-        <ul>
-            <li>Sejong University</li>
-            <li>School number 19</li>
-            <li>School number 5</li>
-            <li>School number 28</li>
-            <li>School number 52</li>
-        </ul>
-    </section>
+        newQuoteBtn.addEventListener('click', getQuote);
 
-    <section>
-        <h2>Work Experience</h2>
+        function getQuote() {
+            // You can replace this URL with the API endpoint that provides quotes.
+            fetch('https://api.example.com/quotes')
+                .then(response => response.json())
+                .then(data => {
+                    const quote = data.quote;
+                    displayQuote(quote);
+                })
+                .catch(error => console.error('Error fetching quote:', error));
+        }
 
-        <h3>Masa Tacos</h3>
-        <p>Started as a dishwasher and quickly progressed to handling diverse cooking tasks. Left due to personal preferences regarding pork.</p>
-
-        <h3>Eid Korean Halal Food</h3>
-        <p>Five months of experience at Eid, specializing in Halal cuisine. Dealt with high-stress situations and managed diverse customer needs.</p>
-    </section>
-
-    <section>
-        <h2>Skills</h2>
-        <ul>
-            <li>Culinary expertise, specializing in diverse cuisines</li>
-            <li>Effective communication in multicultural environments</li>
-            <li>Time management and multitasking</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>Portfolio</h2>
-        <img src="/Images/my.img.jpg" alt="My Images">
-    </section>
-
-    <section>
-        <h2>Links</h2>
-        <ol>
-            <li><a href="hobbies.html" target="_blank">Hobbies</a></li>
-            <li><a href="contacts.html" target="_blank">Contacts</a></li>
-        </ol>
-    </section>
-
-    <footer>
-        <strong><p>THE UNIQUE</p></strong>
-    </footer>
-
-</body>
-
-</html> -->
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Random Quote Generator</title>
-  <style>
-    blockquote {
-      font-style: italic;
-      border: 1px solid #ccc;
-      padding: 10px;
-    }
-    cite {
-      font-size: 0.8em;
-      display: block;
-      text-align: right;
-    }
-  </style>
-</head>
-<body>
-  <h1>Random Quote Generator</h1>
-  <div id="quote"></div>
-
-  <script>
-    // fetch quotes from an external source and store them in local storage
-    const fetchQuotes = async () => {
-      const response = await fetch('https://api.quotable.io/random');
-      const data = await response.json();
-      const quotes = data.results;
-      localStorage.setItem('quotes', JSON.stringify(quotes));
-    };
-
-    // get quotes from local storage or fetch them if not available
-    const getQuotes = async () => {
-      let quotes = JSON.parse(localStorage.getItem('quotes'));
-      if (!quotes) {
-        await fetchQuotes();
-        quotes = JSON.parse(localStorage.getItem('quotes'));
-      }
-      return quotes;
-    };
-
-    // generate a random quote from the quotes array
-    const generateRandomQuote = async () => {
-      const quotes = await getQuotes();
-      const randomIndex = Math.floor(Math.random() * quotes.length);
-      const quote = quotes[randomIndex];
-      return quote;
-    };
-
-    // display the random quote on the page
-    const displayQuote = async () => {
-      const quote = await generateRandomQuote();
-      const quoteElement = document.getElementById('quote');
-      quoteElement.innerHTML = `<blockquote>${quote.content}</blockquote><cite>${quote.author}</cite>`;
-    };
-
-    // fetch quotes when the page first loads
-    displayQuote();
-
-    // generate a new quote when the user clicks the "New Quote" button
-    const newQuoteButton = document.getElementById('new-quote-button');
-    newQuoteButton.addEventListener('click', async () => {
-      await displayQuote();
-    });
-  </script>
+        function displayQuote(quote) {
+            quoteText.textContent = quote;
+        }
+    </script>
 </body>
 </html>
-
